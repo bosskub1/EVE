@@ -1,0 +1,62 @@
+-- ⚡ Roblox FPS Boost Script ⚡
+-- ปลอดภัย 100% ใช้ได้ทุกเกม
+
+for _,v in pairs(workspace:GetDescendants()) do
+    if v:IsA("BasePart") then
+        v.Material = Enum.Material.SmoothPlastic
+        v.Reflectance = 0
+    elseif v:IsA("Decal") or v:IsA("Texture") then
+        v.Transparency = 1
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Enabled = false
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 0
+        v.BlastRadius = 0
+    end
+end
+
+-- ปิดแสงเงาและกราฟิกบางส่วน
+settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+game.Lighting.GlobalShadows = false
+game.Lighting.FogEnd = 1e10
+game.Lighting.Brightness = 1
+game.Lighting.ClockTime = 14
+game.Lighting.FogStart = 0
+game.Lighting.ExposureCompensation = 0
+
+-- ปิดเอฟเฟกต์ภาพ
+for _,v in pairs(game.Lighting:GetChildren()) do
+    if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("BloomEffect") or v:IsA("ColorCorrectionEffect") then
+        v.Enabled = false
+    end
+end
+
+-- ปิด Texture พื้นหลังที่กิน FPS
+for _,v in pairs(workspace:GetDescendants()) do
+    if v:IsA("SurfaceAppearance") then
+        v:Destroy()
+    end
+end
+
+-- ปิด Shadow cast ของวัตถุ
+for _,v in pairs(workspace:GetDescendants()) do
+    if v:IsA("BasePart") then
+        v.CastShadow = false
+    end
+end
+
+-- ปิด Avatar Overhead GUI (ป้ายชื่อ)
+for _,plr in pairs(game.Players:GetPlayers()) do
+    if plr.Character then
+        for _,gui in pairs(plr.Character:GetDescendants()) do
+            if gui:IsA("BillboardGui") then
+                gui.Enabled = false
+            end
+        end
+    end
+end
+
+-- ตั้งค่า FPS Cap (Optional)
+setfpscap(120) -- สามารถเปลี่ยนได้ เช่น 60, 120, 240
+
+

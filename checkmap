@@ -1,0 +1,99 @@
+-- LocalScript (StarterGui)
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- ตารางแมพและสคริปต์
+local MapScripts = {
+    [10595058975] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/ArcaneLineage",
+    [3351674303] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/DrivingEmpire",
+    [662417684] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/LUCKY%20BLOCKS%20Battlegrounds",
+    [3101667897] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/Legends%20Of%20Speed",
+    
+    -- ใส่ PlaceId แมพย่อยตรงนี้ด้วยถ้ามี
+}
+
+local MapNames = {
+    [10595058975] = "Arcane Lineage",
+    [3351674303] = "Driving Empire",
+    [662417684] = "LUCKY BLOCKS Battlegrounds",
+    [3101667897] = "Legends Of Speed"
+}
+
+-- สร้าง ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = playerGui
+
+-- Frame หลัก
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 400, 0, 200)
+Frame.Position = UDim2.new(0.5, -200, 0.5, -100)
+Frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+Frame.BorderSizePixel = 0
+Frame.AnchorPoint = Vector2.new(0,0)
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = ScreenGui
+
+-- มุมโค้ง + Stroke Neon
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 20)
+UICorner.Parent = Frame
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(0, 170, 255)
+UIStroke.Parent = Frame
+
+-- ไฟวิ่งบน Stroke
+spawn(function()
+    while true do
+        for i=0,1,0.02 do
+            UIStroke.Color = Color3.fromHSV(i,1,1)
+            task.wait(0.05)
+        end
+    end
+end)
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Text = "🔄 ตรวจสอบแมพ..."
+Title.Size = UDim2.new(1,0,1,0)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.Font = Enum.Font.GothamBold
+Title.TextScaled = true
+Title.Parent = Frame
+
+-- โหลดสคริปต์พร้อม Countdown 5 วินาที
+local function LoadScriptCountdown(url, mapName)
+    Title.Text = "🔄 กำลังโหลดสคริปต์ของ "..mapName.."..."
+    local seconds = 5
+    for i = seconds,1,-1 do
+        Title.Text = "🔄 กำลังโหลดสคริปต์ของ "..mapName.."... ("..i.."s)"
+        task.wait(1)
+    end
+
+    local success, err = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if success then
+        Title.Text = "✅ โหลดสคริปต์ของ "..mapName.." สำเร็จ!"
+        task.wait(1)
+        Frame.Visible = false
+    else
+        Title.Text = "❌ โหลดล้มเหลว!"
+    end
+end
+
+-- ตรวจสอบแมพและเริ่มโหลดอัตโนมัติ
+task.spawn(function()
+    local placeId = game.PlaceId
+    local url = MapScripts[placeId]
+    local mapName = MapNames[placeId] or "Unknown Map"
+    if url then
+        LoadScriptCountdown(url, mapName)
+    else
+        Title.Text = "❌ แมพนี้ไม่รองรับสคริปต์\nPlaceId: "..placeId
+    end
+end)

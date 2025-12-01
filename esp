@@ -1,4 +1,4 @@
-```lua
+
 
 --// services
 local players = game:GetService("Players")
@@ -122,4 +122,4 @@ runService.Heartbeat:Connect(function(dt)
 		end
 	end
 end)
-```
+

@@ -1,0 +1,62 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local RootPart = Char:WaitForChild("HumanoidRootPart")
+
+--// สร้าง NoDeep
+local NoDeep = workspace:FindFirstChild("NoDeep")
+if not NoDeep then
+    NoDeep = Instance.new("Part")
+    NoDeep.Name  = "NoDeep"
+    NoDeep.Parent = workspace
+    NoDeep.Anchored = true
+    NoDeep.Transparency = 1
+    NoDeep.Size = Vector3.new(30, 1, 30)
+end
+
+CheckNoDeep = function()
+    if NoDeep and RootPart then
+        NoDeep.CFrame = RootPart.CFrame * CFrame.new(0, -3, 0)
+    end
+end
+CheckNoDeep()
+
+
+--// noclip
+noclip = function()
+    for _, v in (Char:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.CanCollide = false
+        end
+    end
+end
+noclip()
+
+
+--// ฟังก์ชันเคลื่อนที่
+TweenTo =  function(CF, Speed)
+    local Distance = (CF.Position - RootPart.Position).Magnitude
+    local TweenInfo = TweenInfo.new(
+        Distance / Speed,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.Out
+    )
+
+    local tween = TweenService:Create(
+        RootPart,
+        TweenInfo,
+        {CFrame = CF}
+    )
+    tween:Play()
+end
+
+--// พิกัดเป้าหมาย
+local TargetCF = CFrame.new(
+    -2634.60498046875,
+    195.0418701171875,
+    4270.31787109375
+)
+
+--// เรียกใช้งาน
+TweenTo(TargetCF, 60)

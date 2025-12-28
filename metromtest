@@ -59,4 +59,4 @@ local TargetCF = CFrame.new(
 )
 
 --// เรียกใช้งาน
-TweenTo(TargetCF, 60)
+TweenTo(TargetCF, 100)

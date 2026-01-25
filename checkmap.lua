@@ -1,6 +1,6 @@
 
 local MAP_SCRIPTS = {
-    [10595058975] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/ArcaneLineage.lua",
+    [10595058975] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/AAA.lua",
     [3351674303] = "https://raw.githubusercontent.com/bosskub1/EVE/refs/heads/main/DrivingEmpire.lua",
     [1122334455] = "https://raw.githubusercontent.com/bosskub1/EVE/Script3.lua",
 }
